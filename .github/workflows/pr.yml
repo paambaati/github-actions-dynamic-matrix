@@ -43,7 +43,7 @@ jobs:
       - checks
     strategy:
       matrix:
-        product: ${{ fromJSON(needs.checks.outputs.added_modified) }}
+        product: ${{ fromJSON(needs.checks.steps.changed_files.outputs.added_modified) }}
     steps:
       - name: do some specific stuff
         run: echo "${{ matrix.product }}"
