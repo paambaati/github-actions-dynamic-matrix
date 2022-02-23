@@ -28,8 +28,13 @@ jobs:
           STUFF_TOJSON: ${{ toJSON(steps.changed_files.outputs.added_modified) }}
         with:
           script: |
-            console.log(process.env.STUFF)
-            console.log(process.env.STUFF_TOJSON)
+            const stuff = JSON.parse(process.env.STUFF)
+            console.log('stuff = ', stuff)
+            const things = stuff.map(s => {
+              s.replace('stuff/', '').replace('.txt', '')
+            })
+            console.log('things = ', things)
+            return things
       # - name: debug
       #   run: echo "${{ steps.changed_files.outputs.added_modified }}"
       # - name: debug again to JSON
