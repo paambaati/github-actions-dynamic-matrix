@@ -20,7 +20,7 @@ jobs:
         with:
           format: 'json'
           filter: |
-            xxx/*.txt
+            stuff/*.txt
       - name: get things out of stuff
         uses: actions/github-script@v6
         id: script
@@ -31,7 +31,7 @@ jobs:
           script: |
             const stuff = JSON.parse(process.env.STUFF)
             const things = stuff.map(s => {
-              return s.replace('xxx/', '').replace('.txt', '')
+              return s.replace('stuff/', '').replace('.txt', '')
             })
             return things
 
