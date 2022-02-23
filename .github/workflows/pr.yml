@@ -29,6 +29,12 @@ jobs:
         # with:
         #   script: |
         #     console.log(`${process.env.STUFF}`)
+      - name: debug
+        run: echo "${{ steps.changed_files.outputs.added_modified }}"
+      - name: debug again to JSON
+        run: echo "${{ toJSON(steps.changed_files.outputs.added_modified) }}"
+      - name: debug again from JSON
+        run: echo "${{ fromJSON(steps.changed_files.outputs.added_modified) }}"
 
   tests:
     name: Specific stuff on only added and modified files
