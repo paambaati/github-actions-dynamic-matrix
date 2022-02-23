@@ -25,7 +25,7 @@ jobs:
           STUFF: ${{ steps.changed_files.outputs.added_modified }}
         with:
           script: |
-            console.log(env)
+            console.log(`${process.env.STUFF}`)
 
   tests:
     name: Specific stuff on only added and modified files
