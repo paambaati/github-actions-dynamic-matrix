@@ -10,8 +10,7 @@ jobs:
     name: Basic stuff
     runs-on: ubuntu-latest
     outputs:
-      things: ${{ steps.changed_files.outputs.added_modified }}
-      things2: ${{ steps.script.outputs.result }}
+      things: ${{ steps.script.outputs.result }}
     steps:
       - name: checkout code
         uses: actions/checkout@v2
@@ -43,7 +42,7 @@ jobs:
       - checks
     strategy:
       matrix:
-        thing: ${{ fromJSON(needs.checks.outputs.things2) }}
+        thing: ${{ fromJSON(needs.checks.outputs.things || []) }}
     steps:
       - name: do some specific stuff for this thing
         run: echo "${{ matrix.thing }}"
