@@ -20,12 +20,15 @@ jobs:
           filter: |
             stuff/*.txt
       - name: save stuff in readable format
-        uses: actions/github-script@v6
-        env:
-          STUFF: ${{ steps.changed_files.outputs.added_modified }}
-        with:
-          script: |
-            console.log(`${process.env.STUFF}`)
+        run: |
+          FILES='${{ toJSON(steps.changed_files.outputs.added_modified) }}'
+          echo ::set-output name=files::${SERVICES}
+        # uses: actions/github-script@v6
+        # env:
+        #   STUFF: ${{ steps.changed_files.outputs.added_modified }}
+        # with:
+        #   script: |
+        #     console.log(`${process.env.STUFF}`)
 
   tests:
     name: Specific stuff on only added and modified files
@@ -34,7 +37,7 @@ jobs:
       - checks
     strategy:
       matrix:
-        product: ${{ fromJSON(needs.checks.changed_files.outputs.added_modified) }}
+        product: ${{ fromJSON(needs.checks.outputs.files) }}
     steps:
       - name: checkout code
         uses: actions/checkout@v2
