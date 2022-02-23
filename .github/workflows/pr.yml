@@ -19,10 +19,10 @@ jobs:
           format: 'json'
           filter: |
             stuff/*.txt
-      - name: save stuff in readable format
-        run: |
-          FILES='${{ toJSON(steps.changed_files.outputs.added_modified) }}'
-          echo ::set-output name=files::${FILES}
+      # - name: save stuff in readable format
+      #   run: |
+      #     FILES='${{ toJSON(steps.changed_files.outputs.added_modified) }}'
+      #     echo ::set-output name=files::${FILES}
         # uses: actions/github-script@v6
         # env:
         #   STUFF: ${{ steps.changed_files.outputs.added_modified }}
@@ -42,8 +42,8 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v2
       - name: debug
-        run: echo "${{ needs.checks.outputs.files }}"
+        run: echo "${{ needs.checks.steps.changed_files.added_modified }}"
       - name: debug again
-        run: echo "${{ fromJSON(needs.checks.outputs.files) }}"
+        run: echo "${{ fromJSON(needs.checks.steps.changed_files.added_modified) }}"
       # - name: do some specific stuff
       #   run: echo "${{ matrix.product }}"
