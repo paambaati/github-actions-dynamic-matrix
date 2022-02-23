@@ -10,7 +10,7 @@ jobs:
     name: Basic stuff
     runs-on: ubuntu-latest
     outputs:
-      files: ${{ steps.changed_files.outputs.added_modified }}
+      things: ${{ steps.changed_files.outputs.added_modified }}
     steps:
       - name: checkout code
         uses: actions/checkout@v2
@@ -21,22 +21,23 @@ jobs:
           format: 'json'
           filter: |
             stuff/*.txt
-      # - name: save stuff in readable format
-      #   run: |
-      #     FILES='${{ toJSON(steps.changed_files.outputs.added_modified) }}'
-      #     echo ::set-output name=files::${FILES}
-        # uses: actions/github-script@v6
-        # env:
-        #   STUFF: ${{ steps.changed_files.outputs.added_modified }}
-        # with:
-        #   script: |
-        #     console.log(`${process.env.STUFF}`)
-      - name: debug
-        run: echo "${{ steps.changed_files.outputs.added_modified }}"
-      - name: debug again to JSON
-        run: echo "${{ toJSON(steps.changed_files.outputs.added_modified) }}"
-      - name: debug again from JSON
-        run: echo "${{ fromJSON(steps.changed_files.outputs.added_modified) }}"
+      - name: get things out of stuff
+        uses: actions/github-script@v6
+        env:
+          STUFF: ${{ steps.changed_files.outputs.added_modified }}
+          STUFF_TOJSON: ${{ toJSON(steps.changed_files.outputs.added_modified) }}
+          STUFF_FROM_JSON: ${{ fromJSON(steps.changed_files.outputs.added_modified) }}
+        with:
+          script: |
+            console.log(process.env.STUFF)
+            console.log(process.env.STUFF_TOJSON)
+            console.log(process.env.STUFF_FROMJSON)
+      # - name: debug
+      #   run: echo "${{ steps.changed_files.outputs.added_modified }}"
+      # - name: debug again to JSON
+      #   run: echo "${{ toJSON(steps.changed_files.outputs.added_modified) }}"
+      # - name: debug again from JSON
+      #   run: echo "${{ fromJSON(steps.changed_files.outputs.added_modified) }}"
 
   tests:
     name: Specific stuff on only added and modified files
@@ -45,7 +46,7 @@ jobs:
       - checks
     strategy:
       matrix:
-        product: ${{ fromJSON(needs.checks.outputs.files) }}
+        thing: ${{ fromJSON(needs.checks.outputs.things) }}
     steps:
-      - name: do some specific stuff
-        run: echo "${{ matrix.product }}"
+      - name: do some specific stuff for this thing
+        run: echo "${{ matrix.thing }}"
