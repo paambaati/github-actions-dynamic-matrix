@@ -26,12 +26,10 @@ jobs:
         env:
           STUFF: ${{ steps.changed_files.outputs.added_modified }}
           STUFF_TOJSON: ${{ toJSON(steps.changed_files.outputs.added_modified) }}
-          STUFF_FROM_JSON: ${{ fromJSON(steps.changed_files.outputs.added_modified) }}
         with:
           script: |
             console.log(process.env.STUFF)
             console.log(process.env.STUFF_TOJSON)
-            console.log(process.env.STUFF_FROMJSON)
       # - name: debug
       #   run: echo "${{ steps.changed_files.outputs.added_modified }}"
       # - name: debug again to JSON
