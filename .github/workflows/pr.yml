@@ -40,9 +40,10 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - checks
+    if: ${{ needs.checks.outputs.things != '[]' && needs.checks.outputs.things != '' }}
     strategy:
       matrix:
-        thing: ${{ fromJSON(needs.checks.outputs.things) || [] }}
+        thing: ${{ fromJSON(needs.checks.outputs.things) }}
     steps:
       - name: do some specific stuff for this thing
         run: echo "${{ matrix.thing }}"
