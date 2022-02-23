@@ -42,7 +42,7 @@ jobs:
       - checks
     strategy:
       matrix:
-        thing: ${{ fromJSON(needs.checks.outputs.things || []) }}
+        thing: ${{ fromJSON(needs.checks.outputs.things) || [] }}
     steps:
       - name: do some specific stuff for this thing
         run: echo "${{ matrix.thing }}"
