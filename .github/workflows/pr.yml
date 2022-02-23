@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       things: ${{ steps.changed_files.outputs.added_modified }}
+      things2: ${{ steps.script.outputs.result }}
     steps:
       - name: checkout code
         uses: actions/checkout@v2
@@ -23,6 +24,7 @@ jobs:
             stuff/*.txt
       - name: get things out of stuff
         uses: actions/github-script@v6
+        id: script
         env:
           STUFF: ${{ steps.changed_files.outputs.added_modified }}
           STUFF_TOJSON: ${{ toJSON(steps.changed_files.outputs.added_modified) }}
@@ -31,7 +33,7 @@ jobs:
             const stuff = JSON.parse(process.env.STUFF)
             console.log('stuff = ', stuff)
             const things = stuff.map(s => {
-              s.replace('stuff/', '').replace('.txt', '')
+              return s.replace('stuff/', '').replace('.txt', '')
             })
             console.log('things = ', things)
             return things
@@ -49,7 +51,7 @@ jobs:
       - checks
     strategy:
       matrix:
-        thing: ${{ fromJSON(needs.checks.outputs.things) }}
+        thing: ${{ fromJSON(needs.checks.outputs.things2) }}
     steps:
       - name: do some specific stuff for this thing
         run: echo "${{ matrix.thing }}"
