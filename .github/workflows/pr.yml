@@ -22,7 +22,7 @@ jobs:
       - name: save stuff in readable format
         run: |
           FILES='${{ toJSON(steps.changed_files.outputs.added_modified) }}'
-          echo ::set-output name=files::${SERVICES}
+          echo ::set-output name=files::${FILES}
         # uses: actions/github-script@v6
         # env:
         #   STUFF: ${{ steps.changed_files.outputs.added_modified }}
