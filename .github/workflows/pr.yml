@@ -19,6 +19,14 @@ jobs:
           format: 'json'
           filter: |
             stuff/*.txt
+      - name: save stuff in readable format
+        uses: actions/github-script@v6
+        env:
+          STUFF: ${{changed_files.outputs.added_modified}}
+        with:
+          script: |
+            console.log(env)
+
   tests:
     name: Specific stuff on only added and modified files
     runs-on: ubuntu-latest
