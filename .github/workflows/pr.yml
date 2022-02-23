@@ -9,6 +9,8 @@ jobs:
   checks:
     name: Basic stuff
     runs-on: ubuntu-latest
+    outputs:
+      files: ${{ steps.changed_files.outputs.added_modified }}
     steps:
       - name: checkout code
         uses: actions/checkout@v2
@@ -43,7 +45,7 @@ jobs:
       - checks
     strategy:
       matrix:
-        product: ${{ fromJSON(needs.checks.steps.changed_files.outputs.added_modified) }}
+        product: ${{ fromJSON(needs.checks.outputs.files) }}
     steps:
       - name: do some specific stuff
         run: echo "${{ matrix.product }}"
