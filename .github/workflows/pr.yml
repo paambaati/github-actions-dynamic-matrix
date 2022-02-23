@@ -42,8 +42,10 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v2
       - name: debug
-        run: echo "${{ needs.checks.steps.changed_files.added_modified }}"
-      - name: debug again
-        run: echo "${{ fromJSON(needs.checks.steps.changed_files.added_modified) }}"
+        run: echo "${{ needs.checks.steps.changed_files.outputs.added_modified }}"
+      - name: debug again to JSON
+        run: echo "${{ toJSON(needs.checks.steps.changed_files.outputs.added_modified) }}"
+      - name: debug again from JSON
+        run: echo "${{ fromJSON(needs.checks.steps.changed_files.outputs.added_modified) }}"
       # - name: do some specific stuff
       #   run: echo "${{ matrix.product }}"
