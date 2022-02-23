@@ -21,7 +21,7 @@ jobs:
         with:
           format: 'json'
           filter: |
-            stuff/*.txt
+            xxx/*.txt
       - name: get things out of stuff
         uses: actions/github-script@v6
         id: script
@@ -31,18 +31,10 @@ jobs:
         with:
           script: |
             const stuff = JSON.parse(process.env.STUFF)
-            console.log('stuff = ', stuff)
             const things = stuff.map(s => {
-              return s.replace('stuff/', '').replace('.txt', '')
+              return s.replace('xxx/', '').replace('.txt', '')
             })
-            console.log('things = ', things)
             return things
-      # - name: debug
-      #   run: echo "${{ steps.changed_files.outputs.added_modified }}"
-      # - name: debug again to JSON
-      #   run: echo "${{ toJSON(steps.changed_files.outputs.added_modified) }}"
-      # - name: debug again from JSON
-      #   run: echo "${{ fromJSON(steps.changed_files.outputs.added_modified) }}"
 
   tests:
     name: Specific stuff on only added and modified files
